@@ -1,7 +1,10 @@
 import { useState, useRef, KeyboardEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Send, Paperclip } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Send, Paperclip, Mic, Volume2 } from 'lucide-react';
+import { useLanguage } from '@/i18n/LanguageContext';
+import { useToast } from '@/hooks/use-toast';
 
 interface ChatInputProps {
   onSend: (message: string) => void;
@@ -14,10 +17,12 @@ export const ChatInput = ({
   onSend,
   onFileUpload,
   disabled,
-  placeholder = 'Type your message...'
+  placeholder
 }: ChatInputProps) => {
   const [message, setMessage] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { t } = useLanguage();
+  const { toast } = useToast();
 
   const handleSend = () => {
     if (message.trim() && !disabled) {
@@ -39,6 +44,20 @@ export const ChatInput = ({
       onFileUpload(file);
       e.target.value = '';
     }
+  };
+
+  const handleSTTClick = () => {
+    toast({
+      title: "Speech-to-Text",
+      description: t('speakTooltip'),
+    });
+  };
+
+  const handleTTSClick = () => {
+    toast({
+      title: "Text-to-Speech",
+      description: t('listenTooltip'),
+    });
   };
 
   return (
@@ -63,11 +82,51 @@ export const ChatInput = ({
         </Button>
       )}
 
+      {/* Speech-to-Text Button */}
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleSTTClick}
+              disabled={disabled}
+              className="shrink-0 text-muted-foreground hover:text-foreground"
+            >
+              <Mic className="h-5 w-5" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{t('speakTooltip')}</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
+      {/* Text-to-Speech Button */}
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleTTSClick}
+              disabled={disabled}
+              className="shrink-0 text-muted-foreground hover:text-foreground"
+            >
+              <Volume2 className="h-5 w-5" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{t('listenTooltip')}</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
       <Textarea
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder={placeholder}
+        placeholder={placeholder || t('typeMessagePlaceholder')}
         disabled={disabled}
         className="min-h-[44px] max-h-[120px] resize-none bg-background"
         rows={1}

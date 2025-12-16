@@ -2,6 +2,7 @@ import { Message } from '@/agents/types';
 import { cn } from '@/lib/utils';
 import { Bot, User, Download, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 interface ChatMessageProps {
   message: Message;
@@ -11,6 +12,7 @@ interface ChatMessageProps {
 
 export const ChatMessage = ({ message, onFileUpload, onDownload }: ChatMessageProps) => {
   const isUser = message.role === 'user';
+  const { t } = useLanguage();
 
   const formatContent = (content: string) => {
     // Convert markdown-style bold to HTML
@@ -69,7 +71,7 @@ export const ChatMessage = ({ message, onFileUpload, onDownload }: ChatMessagePr
             className="mt-2 gap-2"
           >
             <Upload className="h-4 w-4" />
-            Upload Salary Slip
+            {t('uploadSalarySlip')}
           </Button>
         )}
 
@@ -81,7 +83,7 @@ export const ChatMessage = ({ message, onFileUpload, onDownload }: ChatMessagePr
             className="mt-2 gap-2"
           >
             <Download className="h-4 w-4" />
-            Download Sanction Letter
+            {t('downloadSanctionLetter')}
           </Button>
         )}
 
