@@ -1,62 +1,57 @@
 import { Bot, UserCheck, FileSearch, CreditCard, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
-interface Agent {
-  id: string;
-  name: string;
-  icon: React.ReactNode;
-  description: string;
-  color: string;
-}
-
-const agents: Agent[] = [
-  {
-    id: 'master',
-    name: 'Master Agent',
-    icon: <Bot className="h-5 w-5" />,
-    description: 'Orchestrates the entire loan process',
-    color: 'text-primary'
-  },
-  {
-    id: 'sales',
-    name: 'Sales Agent',
-    icon: <UserCheck className="h-5 w-5" />,
-    description: 'Collects loan requirements & EMI details',
-    color: 'text-chart-1'
-  },
-  {
-    id: 'verification',
-    name: 'Verification Agent',
-    icon: <FileSearch className="h-5 w-5" />,
-    description: 'Validates KYC from CRM database',
-    color: 'text-chart-2'
-  },
-  {
-    id: 'underwriting',
-    name: 'Underwriting Agent',
-    icon: <CreditCard className="h-5 w-5" />,
-    description: 'Credit assessment & eligibility check',
-    color: 'text-chart-3'
-  },
-  {
-    id: 'sanction',
-    name: 'Sanction Letter Agent',
-    icon: <FileText className="h-5 w-5" />,
-    description: 'Generates loan sanction documents',
-    color: 'text-chart-4'
-  }
-];
+import { useLanguage } from '@/i18n/LanguageContext';
 
 interface AgentStatusPanelProps {
   activeAgent?: string;
 }
 
 export const AgentStatusPanel = ({ activeAgent = 'master' }: AgentStatusPanelProps) => {
+  const { t } = useLanguage();
+
+  const agents = [
+    {
+      id: 'master',
+      name: t('masterAgent'),
+      icon: <Bot className="h-5 w-5" />,
+      description: t('masterAgentDesc'),
+      color: 'text-primary'
+    },
+    {
+      id: 'sales',
+      name: t('salesAgent'),
+      icon: <UserCheck className="h-5 w-5" />,
+      description: t('salesAgentDesc'),
+      color: 'text-chart-1'
+    },
+    {
+      id: 'verification',
+      name: t('verificationAgent'),
+      icon: <FileSearch className="h-5 w-5" />,
+      description: t('verificationAgentDesc'),
+      color: 'text-chart-2'
+    },
+    {
+      id: 'underwriting',
+      name: t('underwritingAgent'),
+      icon: <CreditCard className="h-5 w-5" />,
+      description: t('underwritingAgentDesc'),
+      color: 'text-chart-3'
+    },
+    {
+      id: 'sanction',
+      name: t('sanctionAgent'),
+      icon: <FileText className="h-5 w-5" />,
+      description: t('sanctionAgentDesc'),
+      color: 'text-chart-4'
+    }
+  ];
+
   return (
     <div className="bg-card rounded-lg border border-border p-4">
       <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
         <Bot className="h-5 w-5 text-primary" />
-        Agentic AI Architecture
+        {t('agenticArchitecture')}
       </h3>
       
       <div className="space-y-3">
@@ -93,8 +88,7 @@ export const AgentStatusPanel = ({ activeAgent = 'master' }: AgentStatusPanelPro
 
       <div className="mt-4 pt-4 border-t border-border">
         <p className="text-xs text-muted-foreground">
-          This demo showcases a multi-agent AI system where specialized agents
-          collaborate to process loan applications end-to-end.
+          {t('agentPanelNote')}
         </p>
       </div>
     </div>

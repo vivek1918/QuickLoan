@@ -7,6 +7,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { User } from 'lucide-react';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 interface CustomerSelectorProps {
   selectedCustomer: Customer | null;
@@ -14,6 +15,8 @@ interface CustomerSelectorProps {
 }
 
 export const CustomerSelector = ({ selectedCustomer, onSelect }: CustomerSelectorProps) => {
+  const { t } = useLanguage();
+
   return (
     <div className="flex items-center gap-3 p-3 bg-card rounded-lg border border-border shadow-sm">
       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
@@ -21,7 +24,7 @@ export const CustomerSelector = ({ selectedCustomer, onSelect }: CustomerSelecto
       </div>
       <div className="flex-1">
         <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-          Select Customer (Demo)
+          {t('selectCustomerLabel')}
         </label>
         <Select
           value={selectedCustomer?.customer_id}
@@ -31,7 +34,7 @@ export const CustomerSelector = ({ selectedCustomer, onSelect }: CustomerSelecto
           }}
         >
           <SelectTrigger className="mt-1 border-0 bg-transparent p-0 h-auto text-foreground font-medium focus:ring-0">
-            <SelectValue placeholder="Choose a customer..." />
+            <SelectValue placeholder={t('chooseCustomer')} />
           </SelectTrigger>
           <SelectContent>
             {crmData.map((customer) => (

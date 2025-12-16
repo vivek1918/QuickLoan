@@ -8,6 +8,7 @@ import { ChatInput } from './ChatInput';
 import { CustomerSelector } from './CustomerSelector';
 import { Bot, MessageSquare, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 export const ChatWindow = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -16,6 +17,7 @@ export const ChatWindow = () => {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -75,8 +77,8 @@ export const ChatWindow = () => {
     if (!masterAgent) return;
     
     toast({
-      title: "File Uploaded",
-      description: `${file.name} uploaded successfully. Processing...`,
+      title: t('fileUploaded'),
+      description: `${file.name} ${t('fileUploadedDesc')}`,
     });
 
     // Add file upload message
@@ -118,13 +120,13 @@ export const ChatWindow = () => {
       URL.revokeObjectURL(url);
       
       toast({
-        title: "Download Started",
-        description: "Your sanction letter is being downloaded.",
+        title: t('downloadStarted'),
+        description: t('downloadStartedDesc'),
       });
     } else {
       toast({
-        title: "Download Failed",
-        description: "Could not find the sanction letter. Please try again.",
+        title: t('downloadFailed'),
+        description: t('downloadFailedDesc'),
         variant: "destructive"
       });
     }
@@ -139,10 +141,10 @@ export const ChatWindow = () => {
             <Bot className="h-6 w-6 text-primary-foreground" />
           </div>
           <div>
-            <h2 className="font-semibold text-foreground">QuickLoan Assistant</h2>
+            <h2 className="font-semibold text-foreground">{t('assistantName')}</h2>
             <p className="text-xs text-muted-foreground flex items-center gap-1">
               <Sparkles className="h-3 w-3" />
-              AI-Powered Loan Sales Agent
+              {t('aiPoweredAgent')}
             </p>
           </div>
         </div>
@@ -164,11 +166,10 @@ export const ChatWindow = () => {
               <MessageSquare className="h-8 w-8 text-primary" />
             </div>
             <h3 className="text-lg font-semibold text-foreground mb-2">
-              Welcome to QuickLoan NBFC
+              {t('welcomeTitle')}
             </h3>
             <p className="text-muted-foreground max-w-sm">
-              Select a customer from the dropdown above to start a loan conversation.
-              This demo showcases our AI-powered loan sales assistant.
+              {t('welcomeMessage')}
             </p>
           </div>
         ) : (
@@ -216,8 +217,8 @@ export const ChatWindow = () => {
         disabled={!selectedCustomer || isTyping}
         placeholder={
           !selectedCustomer
-            ? 'Select a customer to start chatting...'
-            : 'Type your message...'
+            ? t('selectCustomerPlaceholder')
+            : t('typeMessagePlaceholder')
         }
       />
     </div>
